@@ -1,4 +1,4 @@
-name    'rgevaert-mysql'
+name    'DanieleSalatti-mysql'
 version '2.0.0'
 source 'https://github.com/DanieleSalatti/puppet-mysql'
 author 'rgevaert'
