@@ -26,12 +26,17 @@ class mysql::config
       # we only install a config file if the package doesn't install one
       replace => false,
       notify  => $service_class;*/
-
-    "/etc/mysql/debian.cnf":
+  }
+  
+  if ($mysql_type != 'mariadb-galera')
+  {
+    file
+    { "/etc/mysql/debian.cnf":
       ensure  => present,
       owner   => root,
       group   => root,
       mode    => 600;
+    }
   }
 
   define param($section, $param=$name, $value)
