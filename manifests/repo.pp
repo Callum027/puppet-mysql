@@ -22,7 +22,7 @@ class mysql::repo
       }
     }
 
-    'mariadb': {
+    /mariadb(-galera)?/: {
       apt::key {
         '1BB943DB':
       }
