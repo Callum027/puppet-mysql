@@ -4,7 +4,7 @@ server you want to use: Oracle, MariaDB or Percona
 Only tested on (and probably only works on) Ubuntu
 
 Parameters, first one is the default:
-- type : oracle|mariadb|percona
+- type : oracle|mariadb|mariadb-galera|percona
 - multi: false|true
 
 Requires: puppetlabs/apt
