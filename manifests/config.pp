@@ -28,7 +28,7 @@ class mysql::config
       notify  => $service_class;*/
   }
   
-  if ($mysql_type != 'mariadb-galera')
+  if ($mysql::type != 'mariadb-galera')
   {
     file
     { "/etc/mysql/debian.cnf":
