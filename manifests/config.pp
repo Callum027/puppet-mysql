@@ -107,7 +107,8 @@ class mysql::config
         {
           Augeas["${section}_${param}"] ~> Service[$section]
         }
-      }else
+      }
+      else
       {
         Augeas["${section}_${param}"] ~> Class['mysql::service']
       }
