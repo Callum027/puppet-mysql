@@ -17,7 +17,7 @@ class mysql::config
       group   => mysql,
       mode    => 755;
 
-    /*"/etc/mysql/my.cnf":
+    "/etc/mysql/my.cnf":
       ensure  => present,
       owner   => root,
       group   => root,
@@ -25,7 +25,7 @@ class mysql::config
       source  => [ "puppet:///modules/mysql/my.cnf-${mysql::type}" ],
       # we only install a config file if the package doesn't install one
       replace => false,
-      notify  => $service_class;*/
+      notify  => $service_class;
   }
   
   if ($mysql::type != 'mariadb-galera')
