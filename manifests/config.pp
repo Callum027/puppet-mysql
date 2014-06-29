@@ -17,7 +17,7 @@ class mysql::config
       group   => mysql,
       mode    => 755;
 
-    "/etc/mysql/my.cnf":
+    /*"/etc/mysql/my.cnf":
       ensure  => present,
       owner   => root,
       group   => root,
@@ -25,22 +25,16 @@ class mysql::config
       source  => [ "puppet:///modules/mysql/my.cnf-${mysql::type}" ],
       # we only install a config file if the package doesn't install one
       replace => false,
-      notify  => $service_class;
-  }
-  
-  if ($mysql::type != 'mariadb-galera')
-  {
-    # This file is managed by the user in mariadb-galera.
-    file
-    { "/etc/mysql/debian.cnf":
+      notify  => $service_class;*/
+      
+    "/etc/mysql/debian.cnf":
       ensure  => present,
       owner   => root,
       group   => root,
-      mode    => 600,
-      notify  => $service_class;
-    }
+      mode    => 600;
   }
-  else
+  
+  if ($mysql::type == 'mariadb-galera')
   {
     # Specific settings for mariadb-galera.
     mysql::config::param
