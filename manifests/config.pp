@@ -30,6 +30,12 @@ class mysql::config
   
   if ($mysql::type != 'mariadb-galera')
   {
+    # In the case of mariadb-galera, we DO want to replace my.cnf.
+    File["/etc/mysql/my.cnf"]
+    {
+      replace => true,
+    }
+    
     file
     { "/etc/mysql/debian.cnf":
       ensure  => present,
