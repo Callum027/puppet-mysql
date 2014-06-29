@@ -23,17 +23,13 @@ class mysql::config
       group   => root,
       mode    => 644,
       source  => [ "puppet:///modules/mysql/my.cnf-${mysql::type}" ],
+      # we only install a config file if the package doesn't install one
+      replace => false,
       notify  => $service_class;
   }
   
   if ($mysql::type != 'mariadb-galera')
   {
-    File["/etc/mysql/my.cnf"]
-    {
-      # we only install a config file if the package doesn't install one
-      replace => false,
-    }
-    
     # This file is managed by the user in mariadb-galera.
     file
     { "/etc/mysql/debian.cnf":
@@ -46,11 +42,50 @@ class mysql::config
   }
   else
   {
-    # In the case of mariadb-galera, we DO want to replace my.cnf.
-    File["/etc/mysql/my.cnf"]
-    {
-      replace => true,
-    }
+    # Specific settings for mariadb-galera.
+    mysql::config::param
+  	{ 'query_cache_size':
+  		section	=> 'mysql',
+  		value	=> 0,
+  	}
+  
+  	mysql::config::param
+  	{ 'binlog_format':
+  		section	=> 'mysql',
+  		value	=> 'ROW',
+  	}
+  
+  	mysql::config::param
+  	{ 'default_storage_engine':
+  		section	=> 'mysql',
+  		value	=> 'InnoDB',
+  	}
+  
+  	mysql::config::param
+  	{ 'innodb_autoinc_log_mode':
+  		section	=> 'mysql',
+  		value	=> 2,
+  	}
+  
+  	mysql::config::param
+  	{ 'query_cache_type':
+  		section	=> 'mysql',
+  		value	=> 0,
+  	}
+  
+  	mysql::config::param
+  	{ 'bind-address':
+  		section	=> 'mysql',
+  		value	=> '0.0.0.0',
+  	}
+  
+  	# Galera Provider configuration.
+  	mysql::config::param { 'wsrep_provider':
+  		section	=> 'mysql',
+  		value	=> '/usr/lib/galera/libgalera_smm.so',
+  	}
+  
+  	# wsrep_drupal_282555_workaround
   }
 
   define param($section, $param=$name, $value)
