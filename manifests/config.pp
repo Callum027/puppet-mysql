@@ -30,18 +30,22 @@ class mysql::config
   
   if ($mysql::type != 'mariadb-galera')
   {
-    # In the case of mariadb-galera, we DO want to replace my.cnf.
-    File["/etc/mysql/my.cnf"]
-    {
-      replace => true,
-    }
-    
+    # This file is managed by the user in mariadb-galera.
     file
     { "/etc/mysql/debian.cnf":
       ensure  => present,
       owner   => root,
       group   => root,
-      mode    => 600;
+      mode    => 600,
+      notify  => $service_class;
+    }
+  }
+  else
+  {
+    # In the case of mariadb-galera, we DO want to replace my.cnf.
+    File["/etc/mysql/my.cnf"]
+    {
+      replace => true,
     }
   }
 
