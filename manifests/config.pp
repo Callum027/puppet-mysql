@@ -23,13 +23,17 @@ class mysql::config
       group   => root,
       mode    => 644,
       source  => [ "puppet:///modules/mysql/my.cnf-${mysql::type}" ],
-      # we only install a config file if the package doesn't install one
-      replace => false,
       notify  => $service_class;
   }
   
   if ($mysql::type != 'mariadb-galera')
   {
+    File["/etc/mysql/my.cnf"]
+    {
+      # we only install a config file if the package doesn't install one
+      replace => false,
+    }
+    
     # This file is managed by the user in mariadb-galera.
     file
     { "/etc/mysql/debian.cnf":
